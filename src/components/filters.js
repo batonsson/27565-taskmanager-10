@@ -16,7 +16,7 @@ const createFilterMarkup = (filter, isChecked) => {
   );
 };
 
-export const createFilterTemplate = (filters) => {
+export const createFiltersTemplate = (filters) => {
   const filtersMarkup = filters.map((filter) => createFilterMarkup(filter, getRandomBoolean())).join(`\n`);
 
   return (

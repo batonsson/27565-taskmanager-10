@@ -50,17 +50,9 @@ const countFavoriteTasks = (tasks) => {
 
 const countRepeatingTasks = (tasks) => {
   return tasks.reduce((acc, task) => {
-    let isRepeating = false;
     let {repeatingDays} = task;
 
-    for (let day in repeatingDays) {
-      if (repeatingDays[day]) {
-        isRepeating = true;
-        break;
-      }
-    }
-
-    return isRepeating ? acc + 1 : acc;
+    return Object.values(repeatingDays).some(Boolean) ? acc + 1 : acc;
   }, 0);
 };
 

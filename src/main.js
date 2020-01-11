@@ -28,7 +28,7 @@ const boardBlock = mainBlock.querySelector(`.board`);
 const tasksBlock = boardBlock.querySelector(`.board__tasks`);
 
 render(controlsBlock, createMenuTemplate());
-// render(mainBlock, createFiltersTemplate(filters));
+render(mainBlock, createFiltersTemplate(filters));
 render(tasksBlock, createTaskEditTemplate(tasks.slice(0, 1)[0]));
 
 tasks.slice(0, tasksShownCount - 1).forEach((task) => render(tasksBlock, createTaskTemplate(task)));
