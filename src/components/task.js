@@ -18,8 +18,9 @@ const createHashtagsMarkup = (hashtags) => {
 export const createTaskTemplate = (task) => {
   const {description, tags, dueDate, color, repeatingDays} = task;
 
+  const isRepeating = Object.values(repeatingDays).some(Boolean);
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isDateShowing = !!dueDate;
+  const isDateShowing = !!dueDate && !isRepeating;
 
   const date = isDateShowing ? `${dueDate.getDate()} ${MONTHS[dueDate.getMonth()]}` : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;

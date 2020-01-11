@@ -19,14 +19,14 @@ const generateRepeatingDays = (days) => {
   const repeatingDays = {};
 
   for (const day of days) {
-    repeatingDays[day] = Math.random() > 0.5;
+    repeatingDays[day] = Math.random() > 0.9;
   }
 
   return repeatingDays;
 };
 
 const generateTags = (tags) => {
-  return tags.filter(() => Math.random() > 0.5).slice(0, 3);
+  return tags.filter(() => Math.random() > 0.75).slice(0, 3);
 };
 
 const generateTask = () => {
