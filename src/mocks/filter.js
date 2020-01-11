@@ -60,15 +60,15 @@ const countTaggedTasks = (tasks) => {
   return tasks.reduce((acc, task) => {
     let {tags} = task;
 
-    return tags.length ? acc + 1 : acc;
+    return tags.size ? acc + 1 : acc;
   }, 0);
 };
 
 const countArchivedTasks = (tasks) => {
   return tasks.reduce((acc, task) => {
-    let {isArchived} = task;
+    let {isArchive} = task;
 
-    return isArchived ? acc + 1 : acc;
+    return isArchive ? acc + 1 : acc;
   }, 0);
 };
 

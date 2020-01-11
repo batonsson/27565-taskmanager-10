@@ -7,14 +7,27 @@ import {createLoadMoreButtonTemplate} from './components/load-more-button';
 import {generateTasks} from './mocks/task.js';
 import {generateFilters} from './mocks/filter.js';
 
-const TASK_COUNT = 32;
+const TASK_COUNT = 17;
 const TASK_SHOW_COUNT = 8;
+
+const tasksState = {
+  shownCount: 0,
+  renderedCount: 0
+};
 
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
-let tasksShownCount = TASK_SHOW_COUNT;
+const showTasks = () => {
+  const {shownCount, renderedCount} = tasksState; // render max of 7 tasks at first call (renderedCount === 0) cause task-edit is already rendered
+  const tasksToShow = TASK_SHOW_COUNT < (TASK_COUNT - shownCount) ? TASK_SHOW_COUNT - Number(!renderedCount) : (TASK_COUNT - shownCount);
+
+  tasks.slice(shownCount, shownCount + tasksToShow).forEach((task) => render(tasksBlock, createTaskTemplate(task)));
+
+  tasksState.shownCount += tasksToShow;
+  tasksState.renderedCount++;
+};
 
 const tasks = generateTasks(TASK_COUNT);
 const filters = generateFilters(tasks);
@@ -28,23 +41,19 @@ const boardBlock = mainBlock.querySelector(`.board`);
 const tasksBlock = boardBlock.querySelector(`.board__tasks`);
 
 render(controlsBlock, createMenuTemplate());
-render(mainBlock, createFiltersTemplate(filters));
+render(controlsBlock, createFiltersTemplate(filters), `afterend`);
 render(tasksBlock, createTaskEditTemplate(tasks.slice(0, 1)[0]));
+tasksState.shownCount++;
 
-tasks.slice(0, tasksShownCount - 1).forEach((task) => render(tasksBlock, createTaskTemplate(task)));
+showTasks(true);
 
 render(boardBlock, createLoadMoreButtonTemplate(TASK_COUNT > TASK_SHOW_COUNT), `beforeend`);
 
 const loadMoreButton = boardBlock.querySelector(`.load-more`);
 loadMoreButton.addEventListener(`click`, () => {
-  const showStart = tasksShownCount;
-  const showEnd = showStart + tasksShownCount;
+  showTasks(false);
 
-  tasks.slice(showStart, showEnd).forEach((task) => render(tasksBlock, createTaskTemplate(task)));
-
-  tasksShownCount = showEnd;
-
-  if (tasksShownCount >= tasks.length) {
+  if (tasksState.shownCount >= tasks.length) {
     loadMoreButton.remove();
   }
 });
